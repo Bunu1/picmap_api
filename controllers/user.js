@@ -1,6 +1,6 @@
 const ModelIndex = require('../models');
 const User = ModelIndex.User;
-const Friends = ModelIndex.Friends;
+const Photo = ModelIndex.Photo;
 const Op = ModelIndex.Sequelize.Op;
 
 const UserController = function() { };
@@ -22,44 +22,62 @@ UserController.createUser = function(username, email, password, admin) {
   });
 }
 
+UserController.findOne = function(id, username, email, date_insc, admin, active, enabled) {
+    const where = {};
+    const options = {};
+  
+    if(id !== undefined){
+        where.id = id;
+    }
+    if(username !== undefined){
+        where.username = username;
+    }
+    if(email !== undefined){
+        where.email = email;
+    }
+    if(date_insc !== undefined){
+        where.date_insc = date_insc;
+    }
+    if(admin !== undefined){
+        where.admin = admin;
+    }
+    if(active !== undefined){
+        where.active = active;
+    }
+    if(enabled !== undefined){
+        where.enabled = enabled;
+    }
+    options.where = where;
+    options.include = [
+        Photo
+    ];
+    return User.findOne(options);
+}
+
 UserController.findAll = function(id, username, email, date_insc, admin, active, enabled) {
   const where = {};
   const options = {};
   
     if(id !== undefined){
-        where.id = {
-            [Op.like]: `${id}%`
-        }
+        where.id = id;
     }
     if(username !== undefined){
-        where.username = {
-            [Op.like]: `${username}%`
-        }
+        where.username = username;
     }
     if(email !== undefined){
-        where.email = {
-            [Op.like]: `${email}%`
-        }
+        where.email = email;
     }
     if(date_insc !== undefined){
-        where.date_insc = {
-            [Op.like]: `${date_insc}%`
-        }
+        where.date_insc = date_insc;
     }
     if(admin !== undefined){
-        where.admin = {
-            [Op.like]: `${admin}%`
-        }
+        where.admin = admin;
     }
     if(active !== undefined){
-        where.active = {
-            [Op.like]: `${active}%`
-        }
+        where.active = active;
     }
     if(enabled !== undefined){
-        where.enabled = {
-            [Op.like]: `${enabled}%`
-        }
+        where.enabled = enabled;
     }
     options.where = where;
     return User.findAll(options);

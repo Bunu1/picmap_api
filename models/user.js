@@ -54,4 +54,6 @@ module.exports = function (sequelize, DataTypes) {
 function _associate(models) {
     models.User.hasMany(models.Friends, {foreignKey: 'id_user', targetKey: 'id'});
 	models.User.hasMany(models.Friends, {foreignKey: 'id_friend', targetKey: 'id'});
+    
+    models.User.hasMany(models.Photo, {foreignKey: "id_user", targetKey: "id"});
 }
