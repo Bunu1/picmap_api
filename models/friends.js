@@ -12,6 +12,10 @@ module.exports = function (sequelize, DataTypes) {
         id_friend: {
           type: DataTypes.BIGINT,
           allowNull: false
+        },
+        accepted: {
+            type: DataTypes.BIGINT,
+            defaultValue: 0
         }
     }, {
         paranoid: false,

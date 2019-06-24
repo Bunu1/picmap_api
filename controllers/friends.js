@@ -36,6 +36,13 @@ FriendsController.findAll = function(id, id_user, id_friend) {
     return Friends.findAll(options);
 };
 
+FriendsController.createFriend = function(id_user, id_friend) {
+    return Friends.create({
+        id_user: id_user,
+        id_friend: id_friend
+    });
+}
+
 FriendsController.update = function(id, id_user, id_friend) {
     return Friends.update({
         id_user: id_user,

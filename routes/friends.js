@@ -41,21 +41,21 @@ friendsRouter.put('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
 });
 
 friendsRouter.post('/', function(req, res) {
-  const email = req.body.email;
-  const id_user   = req.id_user;
+    const email = req.body.email;
+    const id_user   = req.id_user;
     const id_friend = req.id_friend;
-  
-  if(id_user === undefined || id_friend === undefined) {
-    res.status(400).json({ 'error': 'parametres invalides' });
-  }
-  
-  FriendsController.createFriend(id_user, id_friend)
+
+    if(id_user === undefined || id_friend === undefined) {
+        res.status(400).json({ 'error': 'parametres invalides' });
+    }
+
+    FriendsController.createFriend(id_user, id_friend)
     .then((friend) => {
-      res.status(201).json(p);
-  })
+        res.status(201).json(p);
+    })
     .catch((err) => {
-      res.status(500).end();
-  })
+        res.status(500).end();
+    })
 });
 
 module.exports = friendsRouter;
