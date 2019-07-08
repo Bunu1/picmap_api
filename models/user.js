@@ -1,7 +1,7 @@
 module.exports = function (sequelize, DataTypes) {
 	const User = sequelize.define('User', {
 		id: {
-            type: DataTypes.BIGINT,
+            type: DataTypes.INTEGER,
 			primaryKey: true,
 			autoIncrement: true
 		},
@@ -25,17 +25,17 @@ module.exports = function (sequelize, DataTypes) {
             defaultValue: DataTypes.NOW
         },
         admin: {
-            type: DataTypes.BIGINT,
+            type: DataTypes.INTEGER,
             allowNull: false,
             defaultValue: 0
         },
         active: {
-            type: DataTypes.BIGINT,
+            type: DataTypes.INTEGER,
             allowNull: false,
-            defaultValue: 0
+            defaultValue: 1
         },
         enabled: {
-            type: DataTypes.BIGINT,
+            type: DataTypes.INTEGER,
             allowNull: false,
             defaultValue: 1
         }
@@ -52,8 +52,8 @@ module.exports = function (sequelize, DataTypes) {
 
 // INTERNAL
 function _associate(models) {
-    models.User.hasMany(models.Friends, {foreignKey: 'id_user', targetKey: 'id'});
-	models.User.hasMany(models.Friends, {foreignKey: 'id_friend', targetKey: 'id'});
+    models.User.hasMany(models.Friends, { foreignKey: 'id_user', targetKey: 'id' });
+	models.User.hasMany(models.Friends, { foreignKey: 'id_friend', targetKey: 'id' });
     
-    models.User.hasMany(models.Photo, {foreignKey: "id_user", targetKey: "id"});
+    models.User.hasMany(models.Photo, { foreignKey: "id_user", targetKey: "id" });
 }

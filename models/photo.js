@@ -26,6 +26,11 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false,
             foreignKey: true
 		},
+        id_event: {
+            type: DataTypes.BIGINT,
+            allowNull: false,
+            foreignKey: true
+        }
     }, {
         paranoid: false,
         underscored: true,
@@ -40,4 +45,5 @@ module.exports = function (sequelize, DataTypes) {
 // INTERNAL
 function _associate(models) {
     models.Photo.belongsTo(models.User, { foreignKey: 'id_user', targetKey: 'id' });
+    models.Photo.belongsTo(models.Event, { foreignKey: 'id_event', targetKey: 'id' });
 }

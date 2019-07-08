@@ -6,8 +6,9 @@ module.exports = function (sequelize, DataTypes) {
 			autoIncrement: true
 		},
         id_user: {
-          type: DataTypes.BIGINT,
-          allowNull: false
+            type: DataTypes.BIGINT,
+            allowNull: false,
+            foreignKey: true
         },
         id_friend: {
           type: DataTypes.BIGINT,
@@ -15,7 +16,8 @@ module.exports = function (sequelize, DataTypes) {
         },
         accepted: {
             type: DataTypes.BIGINT,
-            defaultValue: 0
+            defaultValue: 0,
+            foreignKey: true
         }
     }, {
         paranoid: false,

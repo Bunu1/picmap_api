@@ -4,43 +4,37 @@ const Op = ModelIndex.Sequelize.Op;
 
 const PhotoController = function() { };
 
-PhotoController.add = function(description, link, coordinate_x, coordinate_y) {
+PhotoController.add = function(description, link, coordinate_x, coordinate_y, id_user) {
   return Photo.create({
     description: description,
     link: link,
     coordinate_x: coordinate_x,
-    coordinate_y: coordinate_y
+    coordinate_y: coordinate_y,
+    id_user: id_user
   });
 }
 
-PhotoController.findAll = function(id, description, link, coordinate_x, coordinate_y, limit, offset) {
-  const where = {};
+PhotoController.findAll = function(id, description, link, coordinate_x, coordinate_y, id_user, limit, offset) {
+    const where = {};
 	const options = {};
   
 	if(id !== undefined){
-		where.id = {
-			[Op.like]: `${id}%`
-		}
+		where.id = id;
 	}
 	if(description !== undefined){
-		where.description = {
-			[Op.like]: `${description}%`
-		}
+		where.description = description;
 	}
 	if(link !== undefined){
-		where.link = {
-			[Op.like]: `${link}%`
-		}
+		where.link = link;
 	}
 	if(coordinate_x !== undefined){
-		where.coordinate_x = {
-			[Op.like]: `${coordinate_x}%`
-		}
+		where.coordinate_x = coordinate_x;
 	}
 	if(coordinate_y !== undefined){
-		where.coordinate_y = {
-			[Op.like]: `${coordinate_y}%`
-		}
+		where.coordinate_y = coordinate_y;
+	}
+    if(id_user !== undefined){
+		where.id_user = id_user;
 	}
     
 	options.where = where;
@@ -51,6 +45,7 @@ PhotoController.findAll = function(id, description, link, coordinate_x, coordina
 		options.offset = offset;
 	}
   
+    options.include = ['User']
   return Photo.findAll(options);
 }
 

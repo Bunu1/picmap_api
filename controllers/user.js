@@ -1,6 +1,7 @@
 const ModelIndex = require('../models');
 const User = ModelIndex.User;
 const Photo = ModelIndex.Photo;
+const Friends = ModelIndex.Friends;
 const Op = ModelIndex.Sequelize.Op;
 
 const UserController = function() { };
@@ -20,6 +21,24 @@ UserController.createUser = function(username, email, password, admin) {
       password: password,
       adimn: admin
   });
+}
+
+UserController.getFriendlist = function(id) {
+    const where = {};
+    const options = {};
+    if(id !== undefined){
+        where.id = id;
+    }
+    options.where = where;
+    options.include = [
+        {
+            model: Friends,
+            include: [User]
+        }
+    ];
+    
+    options.attributes = []
+    return User.findOne(options);
 }
 
 UserController.findOne = function(id, username, email, date_insc, admin, active, enabled) {

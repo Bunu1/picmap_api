@@ -22,6 +22,23 @@ userRouter.get('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
   });
 });
 
+userRouter.get('/friendlist/:id', function(req, res) {
+    const id = parseInt(req.params.id);
+  
+    if(id === undefined) {
+        req.status(400).end();
+    }
+
+    UserController.getFriendlist(id)
+    .then((user) => {
+        res.status(200).json(user);
+    })
+    .catch((err) => {
+        res.status(500).end();
+    });
+});
+
+
 userRouter.get('/one', function(req, res) {
     UserController.findOne(req.query.id, req.query.username, req.query.email, req.query.date_insc, req.query.admin, req.query.active, req.query.enabled)
     .then((user) => {
@@ -81,38 +98,37 @@ userRouter.put('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
 
     UserController.update(id, username, email, password, admin, active, enabled)
     .then((user) => {
-        res.status(201).json(p);
+        res.status(201).json(user);
     })
     .catch((err) => {
         res.status(500).end();
     });
 });
 
-userRouter.post('/', function(req, res) {
-  const email = req.body.email;
-  const password1 = req.body.password1;
-  const password2 = req.body.password2;
-  const username  = req.body.username;
-  const admin     = req.body.admin;
-  
-  if(email === undefined || password1 === undefined || password2 === undefined || username === undefined) {
-    res.status(400).json({ 'error': 'parametres invalides' });
-  }
-  
-  if(password1 !== password2) {
-    res.status(500).json({ 'error': 'passwords are different' });
-  } else {
-    bcrypt.hash(password1, 5, function(err, bcryptpwd) {
-      UserController.createUser(username, email, bcryptpwd, admin)
-      .then((user) => {
-          res.status(201).json({'error': 'User creation succeeded'});
-      })
-      .catch((err) => {
-          UserController
-          res.status(500).json({'error': 'User creation failed'});
-      })
-    });
-  }
+userRouter.post('/register', function(req, res) {
+    const email = req.body.email;
+    const username  = req.body.username;
+    const password1 = req.body.password1;
+    const password2 = req.body.password2;
+    const admin     = req.body.admin;
+    
+    if(email === undefined || password1 === undefined || password2 === undefined || username === undefined) {
+        res.status(400).json({ 'error': 'parametres invalides' });
+    }
+
+    if(password1 !== password2) {
+        res.status(500).json({ 'error': 'passwords are different' });
+    } else {
+        bcrypt.hash(password1, 5, function(err, bcryptpwd) {
+            UserController.createUser(username, email, bcryptpwd, admin)
+            .then((user) => {
+                res.status(201).json({'res': 'User creation succeeded'});
+            })
+            .catch((err) => {
+                res.status(500).json({'error': 'User creation failed'});
+            })
+        });
+    }
 });
 
 module.exports = userRouter;

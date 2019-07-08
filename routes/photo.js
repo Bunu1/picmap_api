@@ -9,32 +9,25 @@ const photoRouter = express.Router();
 photoRouter.use(bodyParser.json());
 
 photoRouter.post('/', /*jwt.checkToken,*/ function(req, res) {
-  const description = req.body.description;
-  const link = req.body.link;
-  const coordinate_x = req.body.coordinate_x;
-  const coordinate_y = req.body.coordinate_y;
-	
-  if(link === undefined) {
-    res.status(400).end();
-    return;
-  }
-  if(coordinate_x === undefined) {
-    res.status(400).end();
-    return;
-  }
-  if(coordinate_y === undefined) {
-    res.status(400).end();
-    return;
-  }
-  
-  PhotoController.add(description, link, coordinate_x, coordinate_y)
-  .then((p) => {
-    res.status(201).json(p);
-  })
-  .catch((err) => {
-    console.error(err);
-    res.status(500).end({ "error": "Can't add the photo" });
-  });
+    const description = req.body.description;
+    const link = req.body.link;
+    const coordinate_x = req.body.coordinate_x;
+    const coordinate_y = req.body.coordinate_y;
+    const id_user = req.body.id_user;
+    
+    if(link === undefined || coordinate_x === undefined || coordinate_y === undefined || id_user === undefined) {
+        res.status(400).end();
+        return;
+    }
+
+    PhotoController.add(description, link, coordinate_x, coordinate_y, id_user)
+    .then((p) => {
+        res.status(201).json(p);
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).end({ "error": "Can't add the photo" });
+    });
 });
 
 photoRouter.get('/', function(req, res) {
@@ -73,13 +66,14 @@ photoRouter.put('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
     const link = req.body.link;
     const coordinate_x = req.body.coordinate_x;
     const coordinate_y = req.body.coordinate_y;
+    const id_user = req.body.id_user;
   
     if(id === undefined) {
         res.status(400).end();
         return;
     }
 
-    PhotoController.update(id, description, link, coordinate_x, coordinate_y)
+    PhotoController.update(id, description, link, coordinate_x, coordinate_y, id_user)
     .then((p) => {
         res.status(200).json(p);
     })

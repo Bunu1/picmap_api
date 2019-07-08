@@ -8,13 +8,62 @@ const friendsRouter = express.Router();
 friendsRouter.use(bodyParser.json());
 
 friendsRouter.get('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
-  FriendsController.findAll(req.query.id, req.query.id_user, req.id_friend, req.query.accepted)
+  FriendsController.findAll(req.query.id, req.query.id_user, req.query.id_friend, req.query.accepted)
   .then((friends) => {
     res.status(200).json(friends);
   })
   .catch((err) => {
     res.status(500).end();
   });
+});
+
+friendsRouter.get('/friendlist', /*jwt.checkTokenAdmin,*/ function(req, res) {
+    var id_user = req.query.id_user;
+    
+    if(id_user === undefined) {
+        res.status(400).json({ 'error': 'parametres invalides' });
+    }
+    
+    FriendsController.getFriendlist(id_user)
+    .then((friends) => {
+        res.status(200).json(friends);
+    })
+    .catch((err) => {
+        res.status(500).json(err);
+    });
+});
+
+friendsRouter.get('/requests', /*jwt.checkTokenAdmin,*/ function(req, res) {
+    var id_user = req.query.id_user;
+    
+    if(id_user === undefined) {
+        res.status(400).json({ 'error': 'parametres invalides' });
+    }
+    
+    FriendsController.getRequests(id_user)
+    .then((friends) => {
+        res.status(200).json(friends);
+    })
+    .catch((err) => {
+        res.status(500).json(err);
+    });
+});
+
+friendsRouter.get('/status', /*jwt.checkTokenAdmin,*/ function(req, res) {
+    var id_user = req.query.id_user;
+    var id_friend = req.query.id_friend;
+    
+    if(id_user === undefined || id_friend === undefined) {
+        res.status(400).json({ 'error': 'parametres invalides' });
+    }
+    
+    FriendsController.getStatus(id_user, id_friend)
+    .then((friends) => {
+        res.status(200).json(friends);
+    })
+    .catch((err) => {
+        res.status(500).json(err);
+    });
 });
 
 friendsRouter.get('/one', function(req, res) {
@@ -27,26 +76,6 @@ friendsRouter.get('/one', function(req, res) {
     });
 });
 
-friendsRouter.put('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
-    const id        = req.body.id;
-    const id_user   = req.body.id_user;
-    const id_friend = req.body.id_friend;
-    const accepted  = req.body.accepted;
-    
-    if(id_user === undefined) {
-        res.status(400).end();
-        return;
-    }
-
-
-    FriendsController.update(id, id_user, id_friend, accepted)
-    .then((friends) => {
-        res.status(201).json(friends);
-    })
-    .catch((err) => {
-        res.status(500).end();
-    });
-});
 
 friendsRouter.post('/', function(req, res) {
     const id_user   = req.body.id_user;
@@ -63,6 +92,27 @@ friendsRouter.post('/', function(req, res) {
     .catch((err) => {
         res.status(500).end();
     })
+});
+
+friendsRouter.put('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
+    const id        = req.body.id;
+    const id_user   = req.body.id_user;
+    const id_friend = req.body.id_friend;
+    const accepted  = req.body.accepted;
+    
+    if(id === undefined) {
+        res.status(400).end();
+        return;
+    }
+
+
+    FriendsController.update(id, id_user, id_friend, accepted)
+    .then((friends) => {
+        res.status(200).json({"count": friends});
+    })
+    .catch((err) => {
+        res.status(500).end();
+    });
 });
 
 friendsRouter.delete('/:id', /*jwt.checkTokenAdmin,*/ function(req, res) {
