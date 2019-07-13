@@ -4,17 +4,7 @@ const Op = ModelIndex.Sequelize.Op;
 
 const PhotoController = function() { };
 
-PhotoController.add = function(description, link, coordinate_x, coordinate_y, id_user) {
-  return Photo.create({
-    description: description,
-    link: link,
-    coordinate_x: coordinate_x,
-    coordinate_y: coordinate_y,
-    id_user: id_user
-  });
-}
-
-PhotoController.findAll = function(id, description, link, coordinate_x, coordinate_y, id_user, limit, offset) {
+PhotoController.findAll = function(id, description, link, coordinate_x, coordinate_y, id_user, id_event, deleted, limit, offset) {
     const where = {};
 	const options = {};
   
@@ -22,7 +12,9 @@ PhotoController.findAll = function(id, description, link, coordinate_x, coordina
 		where.id = id;
 	}
 	if(description !== undefined){
-		where.description = description;
+		where.description = {
+			[Op.like]: `${description}%`
+		};
 	}
 	if(link !== undefined){
 		where.link = link;
@@ -35,6 +27,12 @@ PhotoController.findAll = function(id, description, link, coordinate_x, coordina
 	}
     if(id_user !== undefined){
 		where.id_user = id_user;
+	}
+    if(id_event !== undefined){
+		where.id_event = id_event;
+	}
+    if(deleted !== undefined){
+		where.deleted = deleted;
 	}
     
 	options.where = where;
@@ -49,7 +47,19 @@ PhotoController.findAll = function(id, description, link, coordinate_x, coordina
   return Photo.findAll(options);
 }
 
-PhotoController.remove = function(id) {
+PhotoController.add = function(description, link, coordinate_x, coordinate_y, id_user, id_event, deleted) {
+  return Photo.create({
+    description: description,
+    link: link,
+    coordinate_x: coordinate_x,
+    coordinate_y: coordinate_y,
+    id_user: id_user,
+    id_event: id_event,
+    deleted: deleted
+  });
+}
+
+PhotoController.delete = function(id) {
   return Photo.destroy({
     where: { 
       id: id
@@ -57,26 +67,18 @@ PhotoController.remove = function(id) {
   });
 }
 
-PhotoController.update = function(id, description, link, coordinate_x, coordinate_y) {
-    return Photo.findOne({
-        where: {
-            id: id
-        }
-    })
-    .then((photo) => {
-        if(photo) {
-            if(description === undefined) sudescriptionbject = photo.description;
-            if(link === undefined) link = photo.link;
-            if(coordinate_x === undefined) coordinate_x = photo.coordinate_x;
-            if(coordinate_y === undefined) coordinate_y = photo.coordinate_y;
-            return photo.update({
-                description: description,
-                link: link,
-                coordinate_x: coordinate_x,
-                coordinate_y: coordinate_y
-            });
-        }
-    })
+PhotoController.update = function(id, description, link, coordinate_x, coordinate_y, id_user, id_event, deleted) {
+    return Photo.update({
+        description: description,
+        link: link,
+        coordinate_x: coordinate_x,
+        coordinate_y: coordinate_y,
+        id_user: id_user,
+        id_event: id_event,
+        deleted: deleted
+    }, {
+        where: { id: id }
+    });
 }
 
 module.exports = PhotoController;

@@ -1,35 +1,40 @@
 module.exports = function (sequelize, DataTypes) {
     const Photo = sequelize.define('Photo', {
         id: {
-			type: DataTypes.BIGINT,
+			type: DataTypes.INTEGER,
 			primaryKey: true,
 			autoIncrement: true
 		},
         description: {
-          type: DataTypes.TEXT,
-          allowNull: true
+            type: DataTypes.TEXT,
+            allowNull: true
         },
         link: {
-          type: DataTypes.TEXT,
-          allowNull: false
+            type: DataTypes.TEXT,
+            allowNull: false
         },
         coordinate_x: {
-          type: DataTypes.TEXT,
-          allowNull: false
+            type: DataTypes.TEXT,
+            allowNull: false
         },
         coordinate_y: {
-          type: DataTypes.TEXT,
-          allowNull: false
+            type: DataTypes.TEXT,
+            allowNull: false
         },
         id_user: {
-			type: DataTypes.BIGINT,
+			type: DataTypes.INTEGER,
             allowNull: false,
             foreignKey: true
 		},
         id_event: {
-            type: DataTypes.BIGINT,
+            type: DataTypes.INTEGER,
             allowNull: false,
             foreignKey: true
+        },
+        deleted: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0
         }
     }, {
         paranoid: false,

@@ -14,13 +14,15 @@ photoRouter.post('/', /*jwt.checkToken,*/ function(req, res) {
     const coordinate_x = req.body.coordinate_x;
     const coordinate_y = req.body.coordinate_y;
     const id_user = req.body.id_user;
+    const id_event = req.body.id_event;
+    const deleted = req.body.deleted;
     
-    if(link === undefined || coordinate_x === undefined || coordinate_y === undefined || id_user === undefined) {
+    if(link === undefined || coordinate_x === undefined || coordinate_y === undefined || id_user === undefined, id_event === undefined) {
         res.status(400).end();
         return;
     }
 
-    PhotoController.add(description, link, coordinate_x, coordinate_y, id_user)
+    PhotoController.add(description, link, coordinate_x, coordinate_y, id_user, id_event, deleted)
     .then((p) => {
         res.status(201).json(p);
     })
@@ -33,6 +35,7 @@ photoRouter.post('/', /*jwt.checkToken,*/ function(req, res) {
 photoRouter.get('/', function(req, res) {
   const limit = req.query.limit ? parseInt(req.query.limit) : undefined;
   const offset = req.query.offset ? parseInt(req.query.offset) : undefined;
+    console.log("desc = " + req.query.description)
   PhotoController.findAll(req.query.id, req.query.description, req.query.link, req.query.coordinate_x, req.query.coordinate_y, limit, offset)
   .then((photos) => {
     res.status(200).json(photos);
@@ -43,23 +46,6 @@ photoRouter.get('/', function(req, res) {
   });
 });
 
-photoRouter.delete('/:id', /*jwt.checkTokenAdmin,*/ function(req, res) {
-  const id = parseInt(req.params.id);
-  
-  if(id === undefined) {
-    req.status(400).end();
-  }
-  
-  PhotoController.remove(id)
-  .then((p) => {
-    res.status(201).json(p);
-  })
-  .catch((err) => {
-    console.error(err);
-    res.status(500).end();
-  });
-})
-
 photoRouter.put('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
     const id = req.body.id;
     const description = req.body.description;
@@ -67,15 +53,17 @@ photoRouter.put('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
     const coordinate_x = req.body.coordinate_x;
     const coordinate_y = req.body.coordinate_y;
     const id_user = req.body.id_user;
+    const id_event = req.body.id_event;
+    const deleted = req.body.deleted;
   
     if(id === undefined) {
         res.status(400).end();
         return;
     }
 
-    PhotoController.update(id, description, link, coordinate_x, coordinate_y, id_user)
+    PhotoController.update(id, description, link, coordinate_x, coordinate_y, id_user, id_event, deleted)
     .then((p) => {
-        res.status(200).json(p);
+        res.status(200).json({count: p});
     })
     .catch((err) => {
         console.error(err);
@@ -83,5 +71,36 @@ photoRouter.put('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
     });
 });
 
+photoRouter.put('/remove/:id', function(req, res) {
+    const id = req.params.id;
+    
+    if(id === undefined) {
+        req.status(400).end();
+    }
+    
+    PhotoController.update(id, undefined, undefined, undefined, undefined, undefined, undefined, 1)
+    .then((photo) => {
+        res.status(200).json({count: photo});
+    })
+    .catch((err) => {
+        res.status(500).end();
+    })
+});
+
+photoRouter.delete('/:id', /*jwt.checkTokenAdmin,*/ function(req, res) {
+  const id = parseInt(req.params.id);
+  
+  if(id === undefined) {
+    req.status(400).end();
+  }
+  
+  PhotoController.delete(id)
+  .then((photo) => {
+    res.status(201).json(photo);
+  })
+  .catch((err) => {
+    res.status(500).end();
+  });
+})
 
 module.exports = photoRouter;

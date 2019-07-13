@@ -67,9 +67,11 @@ UserController.findOne = function(id, username, email, date_insc, admin, active,
         where.enabled = enabled;
     }
     options.where = where;
-    options.include = [
-        Photo
-    ];
+    options.include = [{
+        model: Photo,
+        where: { "deleted": 0 },
+        required: false
+    }];
     return User.findOne(options);
 }
 

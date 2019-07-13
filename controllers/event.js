@@ -35,7 +35,8 @@ EventController.findAll = function(id, name, start_date, end_date, coordinate_x,
     if(photos) {
         options.include = [{
             model: Photo,
-            include: ['User']
+            include: ['User'],
+            where: { deleted: 0 }
         }]
     }
     return Event.findAll(options);
