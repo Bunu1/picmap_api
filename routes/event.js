@@ -8,13 +8,24 @@ const eventRouter = express.Router();
 eventRouter.use(bodyParser.json());
 
 eventRouter.get('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
+    
+    EventController.findAll(req.query.id, req.query.name, req.query.start_date, req.query.end_date, req.query.coordinate_x, req.query.coordinate_y, req.query.range)
+    .then((events) => {
+        res.status(200).json(events);
+    })
+    .catch((err) => {
+        res.status(500).end();
+    });
+});
+
+eventRouter.get('/actual', /*jwt.checkTokenAdmin,*/ function(req, res) {
 
     let photo = false;
     if(req.query.photos !== undefined) {
         photo = JSON.parse(req.query.photos)
     }
     
-    EventController.findAll(req.query.id, req.query.name, req.query.start_date, req.query.end_date, req.query.coordinate_x, req.query.coordinate_y, req.query.range, photo)
+    EventController.findActuals(req.query.id, req.query.name, req.query.start_date, req.query.end_date, req.query.coordinate_x, req.query.coordinate_y, req.query.range, photo)
     .then((events) => {
         res.status(200).json(events);
     })

@@ -13,7 +13,7 @@ PhotoController.findAll = function(id, description, link, coordinate_x, coordina
 	}
 	if(description !== undefined){
 		where.description = {
-			[Op.like]: `${description}%`
+			[Op.like]: "%"+description+"%"
 		};
 	}
 	if(link !== undefined){

@@ -2,10 +2,11 @@ const ModelIndex = require('../models');
 const Event = ModelIndex.Event;
 const Photo = ModelIndex.Photo;
 const Op = ModelIndex.Sequelize.Op;
+const Now = ModelIndex.Sequelize.NOW;
 
 const EventController = function() { };
 
-EventController.findAll = function(id, name, start_date, end_date, coordinate_x, coordinate_y, range, photos) {
+EventController.findAll = function(id, name, start_date, end_date, coordinate_x, coordinate_y, range) {
   const where = {};
   const options = {};
   
@@ -30,13 +31,28 @@ EventController.findAll = function(id, name, start_date, end_date, coordinate_x,
     if(range !== undefined){
         where.range = range;
     }
+    return Event.findAll(options);
+};
+
+EventController.findActuals = function(id, name, start_date, end_date, coordinate_x, coordinate_y, range, photos) {
+  const where = {};
+  const options = {};
+  
+    where.start_date = {
+        [Op.gte]: Now
+    };
+    where.end_date = {
+        [Op.lte]: Now
+    };
+
     
     options.where = where;
     if(photos) {
         options.include = [{
             model: Photo,
             include: ['User'],
-            where: { deleted: 0 }
+            where: { deleted: 0 },
+            required: false
         }]
     }
     return Event.findAll(options);
