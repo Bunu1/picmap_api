@@ -64,7 +64,10 @@ userRouter.post('/login', function(req, res) {
           if(user.enabled === 1) {
             res.status(200).json({
               'id': user.id,
+              'firstname': user.firstname,
+              'lastname': user.lastname,
               'username': user.username,
+              'email': user.email,
               'isAdmin': user.admin,
               'token': jwt.generateToken(user)
             });
