@@ -12,10 +12,10 @@ ModelIndex.getModel = function (modelName) {
     return this[modelName];
 };
 
-const sequelize = new Sequelize('picmap', 'root', '', {
+const sequelize = new Sequelize('picmap', 'root', 'root', {
   host: 'localhost',
   dialect: 'mysql',
-  port: 3306,
+  port: 8889,
   operatorsAliases: Op
 });
 

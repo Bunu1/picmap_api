@@ -1,23 +1,22 @@
 module.exports = function (sequelize, DataTypes) {
     const Friends = sequelize.define('Friends', {
         id: {
-            type: DataTypes.BIGINT,
+            type: DataTypes.INTEGER,
 			primaryKey: true,
 			autoIncrement: true
 		},
         id_user: {
-            type: DataTypes.BIGINT,
+            type: DataTypes.INTEGER,
             allowNull: false,
             foreignKey: true
         },
         id_friend: {
-          type: DataTypes.BIGINT,
+          type: DataTypes.INTEGER,
           allowNull: false
         },
         accepted: {
-            type: DataTypes.BIGINT,
-            defaultValue: 0,
-            foreignKey: true
+            type: DataTypes.INTEGER,
+            defaultValue: 0
         }
     }, {
         paranoid: false,
