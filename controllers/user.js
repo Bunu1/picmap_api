@@ -14,12 +14,14 @@ UserController.checkUsername = function(username) {
 	})
 }
 
-UserController.createUser = function(username, email, password, admin) {
+UserController.createUser = function(firstname, lastname, username, email, password, admin) {
   return User.create({
-      username: username,
-      email: email,
-      password: password,
-      adimn: admin
+		firstname: firstname,
+		lastname: lastname,
+    username: username,
+    email: email,
+    password: password,
+    adimn: admin
   });
 }
 
@@ -36,19 +38,25 @@ UserController.getFriendlist = function(id) {
             include: [User]
         }
     ];
-    
+
     options.attributes = []
     return User.findOne(options);
 }
 
-UserController.findOne = function(id, username, email, date_insc, admin, active, enabled) {
+UserController.findOne = function(id, firstname, lastname, username, email, date_insc, admin, active, enabled) {
     const where = {};
     const options = {};
-  
+
     if(id !== undefined){
         where.id = id;
     }
-    if(username !== undefined){
+    if(firstname !== undefined){
+        where.firstname = firstname;
+    }
+		if(lastname !== undefined){
+        where.lastname = lastname;
+    }
+		if(username !== undefined){
         where.username = username;
     }
     if(email !== undefined){
@@ -75,14 +83,20 @@ UserController.findOne = function(id, username, email, date_insc, admin, active,
     return User.findOne(options);
 }
 
-UserController.findAll = function(id, username, email, date_insc, admin, active, enabled) {
+UserController.findAll = function(id, firstname, lastname, username, email, date_insc, admin, active, enabled) {
   const where = {};
   const options = {};
-  
+
     if(id !== undefined){
         where.id = id;
     }
-    if(username !== undefined){
+    if(firstname !== undefined){
+        where.firstname = firstname;
+    }
+		if(lastname !== undefined){
+        where.lastname = lastname;
+    }
+		if(username !== undefined){
         where.username = username;
     }
     if(email !== undefined){
@@ -104,26 +118,15 @@ UserController.findAll = function(id, username, email, date_insc, admin, active,
     return User.findAll(options);
 };
 
-UserController.update = function(id, username, email, password, admin, active, enabled) {
-  /*return User.findOne({where: {id: id}})
-  .then((User) => {
-    if(User) {
-      if(username === undefined) username = User.username;
-      if(admin === undefined) admin = User.admin;
-      if(enabled === undefined) enabled = User.enabled;
-      return User.updateAttributes({
-        username: username,
-        admin: admin,
-        enabled: enabled
-      });
-    }
-  })*/
+UserController.update = function(id, firstname, lastname, username, email, password, admin, active, enabled) {
     return User.update({
-        username: username,
-        email: email,
-        admin: admin,
-        active: active,
-        enabled: enabled,
+			firstname: firstname,
+			lastname: lastname,
+      username: username,
+      email: email,
+      admin: admin,
+      active: active,
+      enabled: enabled,
     }, {
         where: { id: id }
     });
