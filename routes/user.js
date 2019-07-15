@@ -129,7 +129,7 @@ userRouter.post('/register', function(req, res) {
                 res.status(201).json({'res': 'User creation succeeded'});
             })
             .catch((err) => {
-                res.status(400).json({'error': 'User creation failed'});
+                res.status(500).json({'error': 'User creation failed'});
             })
         });
     }
