@@ -121,7 +121,7 @@ userRouter.post('/register', function(req, res) {
     }
 
     if(password1 !== password2) {
-        res.status(500).json({ 'error': 'passwords are different' });
+        res.status(500).json({'error': 'passwords are different'});
     } else {
         bcrypt.hash(password1, 5, function(err, bcryptpwd) {
             UserController.createUser(firstname, lastname, username, email, bcryptpwd, admin)
@@ -129,7 +129,7 @@ userRouter.post('/register', function(req, res) {
                 res.status(201).json({'res': 'User creation succeeded'});
             })
             .catch((err) => {
-                res.status(500).json({'error': 'User creation failed'});
+                res.status(400).json({'error': 'User creation failed'});
             })
         });
     }
