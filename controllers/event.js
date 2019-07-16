@@ -6,10 +6,10 @@ const Now = ModelIndex.Sequelize.NOW;
 
 const EventController = function() { };
 
-EventController.findAll = function(id, name, start_date, end_date, coordinate_x, coordinate_y, range) {
+EventController.findAll = function(id, name, start_date, end_date, coordinate_x, coordinate_y, range, photos) {
   const where = {};
   const options = {};
-  
+
     if(id !== undefined){
         where.id = id;
     }
@@ -37,7 +37,7 @@ EventController.findAll = function(id, name, start_date, end_date, coordinate_x,
 EventController.findActuals = function(id, name, start_date, end_date, coordinate_x, coordinate_y, range, photos) {
   const where = {};
   const options = {};
-  
+
     where.start_date = {
         [Op.gte]: Now
     };
@@ -45,7 +45,7 @@ EventController.findActuals = function(id, name, start_date, end_date, coordinat
         [Op.lte]: Now
     };
 
-    
+
     options.where = where;
     if(photos) {
         options.include = [{
@@ -61,7 +61,7 @@ EventController.findActuals = function(id, name, start_date, end_date, coordinat
 EventController.findOne = function(id, name, start_date, end_date, coordinate_x, coordinate_y, range) {
     const where = {};
     const options = {};
-  
+
     if(id !== undefined){
         where.id = id;
     }
@@ -83,7 +83,7 @@ EventController.findOne = function(id, name, start_date, end_date, coordinate_x,
     if(range !== undefined){
         where.range = range;
     }
-    
+
     options.where = where;
     return Event.findOne(options);
 };
@@ -114,7 +114,7 @@ EventController.update = function(id, name, start_date, end_date, coordinate_x, 
 
 EventController.remove = function(id) {
     return Event.destroy({
-        where: { 
+        where: {
             id: id
         }
     });

@@ -13,7 +13,7 @@ userRouter.get('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
   const limit = req.query.limit ? parseInt(req.query.limit) : undefined;
   const offset = req.query.offset ? parseInt(req.query.offset) : undefined;
 
-  UserController.findAll(req.query.id, req.query.firstname, req.query.lastname, req.query.username, req.query.email, req.query.date_insc, req.query.admin, req.query.active, req.query.enabled)
+  UserController.findAll(req.query.id, req.query.firstname, req.query.lastname, req.query.username, req.query.email, req.query.pp_link, req.query.date_insc, req.query.admin, req.query.active, req.query.enabled)
   .then((users) => {
     res.status(200).json(users);
   })
@@ -40,7 +40,7 @@ userRouter.get('/friendlist/:id', function(req, res) {
 
 
 userRouter.get('/one', function(req, res) {
-    UserController.findOne(req.query.id, req.query.firstname, req.query.lastname, req.query.username, req.query.email, req.query.date_insc, req.query.admin, req.query.active, req.query.enabled)
+    UserController.findOne(req.query.id, req.query.firstname, req.query.lastname, req.query.username, req.query.email, req.query.pp_link, req.query.date_insc, req.query.admin, req.query.active, req.query.enabled)
     .then((user) => {
         res.status(200).json(user);
     })
@@ -68,6 +68,7 @@ userRouter.post('/login', function(req, res) {
               'lastname': user.lastname,
               'username': user.username,
               'email': user.email,
+              'pp_link': user.pp_link,
               'isAdmin': user.admin,
               'token': jwt.generateToken(user)
             });
@@ -91,7 +92,8 @@ userRouter.put('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
     const username  = req.body.username;
     const email     = req.body.email;
     const password  = req.body.password;
-    const admin     = req.body.active;
+    const pp_link  = req.body.pp_link;
+    const admin     = req.body.admin;
     const active    = req.body.active;
     const enabled   = req.body.enabled;
 
@@ -101,7 +103,7 @@ userRouter.put('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
     }
 
 
-    UserController.update(id, firstname, lastname, username, email, password, admin, active, enabled)
+    UserController.update(id, firstname, lastname, username, email, password, pp_link, admin, active, enabled)
     .then((user) => {
         res.status(201).json(user);
     })
@@ -117,6 +119,7 @@ userRouter.post('/register', function(req, res) {
     const username  = req.body.username;
     const password1 = req.body.password1;
     const password2 = req.body.password2;
+    const pp_link = req.body.pp_link;
     const admin     = req.body.admin;
 
     if(firstname === undefined || lastname === undefined || email === undefined || password1 === undefined || password2 === undefined || username === undefined) {
@@ -127,7 +130,7 @@ userRouter.post('/register', function(req, res) {
         res.status(500).json({'error': 'passwords are different'});
     } else {
         bcrypt.hash(password1, 5, function(err, bcryptpwd) {
-            UserController.createUser(firstname, lastname, username, email, bcryptpwd, admin)
+            UserController.createUser(firstname, lastname, username, email, bcryptpwd, pp_link, admin)
             .then((user) => {
                 res.status(201).json({'res': 'User creation succeeded'});
             })

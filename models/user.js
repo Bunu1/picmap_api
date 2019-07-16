@@ -27,6 +27,9 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.STRING,
         allowNull: false,
     },
+		pp_link: {
+        type: DataTypes.STRING
+    },
     date_insc: {
         type: DataTypes.DATE,
         allowNull: false,

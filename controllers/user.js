@@ -14,7 +14,7 @@ UserController.checkUsername = function(username) {
 	})
 }
 
-UserController.createUser = function(firstname, lastname, username, email, password, admin) {
+UserController.createUser = function(firstname, lastname, username, email, password, pp_link, admin) {
   return User.create({
 		firstname: firstname,
 		lastname: lastname,
@@ -43,7 +43,7 @@ UserController.getFriendlist = function(id) {
     return User.findOne(options);
 }
 
-UserController.findOne = function(id, firstname, lastname, username, email, date_insc, admin, active, enabled) {
+UserController.findOne = function(id, firstname, lastname, username, email, pp_link, date_insc, admin, active, enabled) {
     const where = {};
     const options = {};
 
@@ -62,7 +62,10 @@ UserController.findOne = function(id, firstname, lastname, username, email, date
     if(email !== undefined){
         where.email = email;
     }
-    if(date_insc !== undefined){
+    if(pp_link !== undefined){
+        where.pp_link = pp_link;
+    }
+		if(date_insc !== undefined){
         where.date_insc = date_insc;
     }
     if(admin !== undefined){
@@ -83,7 +86,7 @@ UserController.findOne = function(id, firstname, lastname, username, email, date
     return User.findOne(options);
 }
 
-UserController.findAll = function(id, firstname, lastname, username, email, date_insc, admin, active, enabled) {
+UserController.findAll = function(id, firstname, lastname, username, email, pp_link, date_insc, admin, active, enabled) {
   const where = {};
   const options = {};
 
@@ -102,6 +105,9 @@ UserController.findAll = function(id, firstname, lastname, username, email, date
     if(email !== undefined){
         where.email = email;
     }
+		if(pp_link !== undefined){
+        where.pp_link = pp_link;
+    }
     if(date_insc !== undefined){
         where.date_insc = date_insc;
     }
@@ -118,12 +124,13 @@ UserController.findAll = function(id, firstname, lastname, username, email, date
     return User.findAll(options);
 };
 
-UserController.update = function(id, firstname, lastname, username, email, password, admin, active, enabled) {
+UserController.update = function(id, firstname, lastname, username, email, password, date_insc, admin, active, enabled) {
     return User.update({
 			firstname: firstname,
 			lastname: lastname,
       username: username,
       email: email,
+			pp_link: pp_link,
       admin: admin,
       active: active,
       enabled: enabled,

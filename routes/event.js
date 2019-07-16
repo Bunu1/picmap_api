@@ -8,30 +8,35 @@ const eventRouter = express.Router();
 eventRouter.use(bodyParser.json());
 
 eventRouter.get('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
-    
-    EventController.findAll(req.query.id, req.query.name, req.query.start_date, req.query.end_date, req.query.coordinate_x, req.query.coordinate_y, req.query.range)
-    .then((events) => {
-        res.status(200).json(events);
-    })
-    .catch((err) => {
-        res.status(500).end();
-    });
+
+  let photo = false;
+  if(req.query.photos !== undefined) {
+      photo = JSON.parse(req.query.photos)
+  }
+
+  EventController.findAll(req.query.id, req.query.name, req.query.start_date, req.query.end_date, req.query.coordinate_x, req.query.coordinate_y, req.query.range, photo)
+  .then((events) => {
+      res.status(200).json(events);
+  })
+  .catch((err) => {
+      res.status(500).end();
+  });
 });
 
 eventRouter.get('/actual', /*jwt.checkTokenAdmin,*/ function(req, res) {
 
-    let photo = false;
-    if(req.query.photos !== undefined) {
-        photo = JSON.parse(req.query.photos)
-    }
-    
-    EventController.findActuals(req.query.id, req.query.name, req.query.start_date, req.query.end_date, req.query.coordinate_x, req.query.coordinate_y, req.query.range, photo)
-    .then((events) => {
-        res.status(200).json(events);
-    })
-    .catch((err) => {
-        res.status(500).end();
-    });
+  let photo = false;
+  if(req.query.photos !== undefined) {
+      photo = JSON.parse(req.query.photos)
+  }
+
+  EventController.findActuals(req.query.id, req.query.name, req.query.start_date, req.query.end_date, req.query.coordinate_x, req.query.coordinate_y, req.query.range, photo)
+  .then((events) => {
+      res.status(200).json(events);
+  })
+  .catch((err) => {
+      res.status(500).end();
+  });
 });
 
 eventRouter.get('/one', /*jwt.checkTokenAdmin,*/ function(req, res) {
@@ -70,7 +75,7 @@ eventRouter.put('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
     const coordinate_y  = req.body.coordinate_y;
     const range         = req.body.range;
 
-    
+
     if(id === undefined) {
         res.status(500).end();
         return;
@@ -87,11 +92,11 @@ eventRouter.put('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
 
 eventRouter.delete('/:id', /*jwt.checkTokenAdmin,*/ function(req, res) {
   const id = req.params.id;
-  
+
   if(id === undefined) {
     req.status(500).end();
   }
-  
+
   EventController.remove(id)
   .then((p) => {
     res.status(200).json({itemsDeleted: p});
