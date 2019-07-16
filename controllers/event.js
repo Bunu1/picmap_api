@@ -31,6 +31,16 @@ EventController.findAll = function(id, name, start_date, end_date, coordinate_x,
     if(range !== undefined){
         where.range = range;
     }
+
+    options.where = where;
+    if(photos) {
+        options.include = [{
+            model: Photo,
+            include: ['User'],
+            where: { deleted: 0 },
+            required: false
+        }]
+    }
     return Event.findAll(options);
 };
 
