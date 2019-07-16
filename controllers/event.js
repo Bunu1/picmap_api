@@ -49,13 +49,13 @@ EventController.findActuals = function(id, name, start_date, end_date, coordinat
   const options = {};
 
     where.start_date = {
-        [Op.gte]: Now
+        [Op.lte]: new Date()
     };
     where.end_date = {
-        [Op.lte]: Now
+        [Op.gte]: new Date()
     };
 
-
+console.log(new Date())
     options.where = where;
     if(photos) {
         options.include = [{
@@ -65,6 +65,7 @@ EventController.findActuals = function(id, name, start_date, end_date, coordinat
             required: false
         }]
     }
+
     return Event.findAll(options);
 };
 

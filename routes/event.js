@@ -24,7 +24,7 @@ eventRouter.get('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
   });
 });
 
-eventRouter.get('/actual', /*jwt.checkTokenAdmin,*/ function(req, res) {
+eventRouter.get('/ongoing', /*jwt.checkTokenAdmin,*/ function(req, res) {
 
   let photo = false;
   if(req.query.photos !== undefined) {
