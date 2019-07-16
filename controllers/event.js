@@ -34,12 +34,12 @@ EventController.findAll = function(id, name, start_date, end_date, coordinate_x,
 
     options.where = where;
     if(photos) {
-        options.include = [{
-            model: Photo,
-            include: ['User'],
-            where: { deleted: 0 },
-            required: false
-        }]
+      options.include = [{
+        model: Photo,
+        include: ['User'],
+        where: { deleted: 0 },
+        required: false
+      }]
     }
     return Event.findAll(options);
 };
