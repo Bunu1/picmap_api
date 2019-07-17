@@ -27,16 +27,18 @@ friendsRouter.get('/friendlist', /*jwt.checkTokenAdmin,*/ function(req, res) {
 
     FriendsController.getFriendlist(id_user)
     .then((friends) => {
+      
+      if(friends.length === 0)
+        res.status(200).json(friends);
+
       for(let i = 0; i < friends.length; i++) {
         let i2 = i;
         let id = 0;
 
         if(friends[i2].dataValues.id_user === +id_user) {
           id = friends[i2].dataValues.id_friend;
-          console.log(i2 + " " + id)
         } else {
           id = friends[i2].dataValues.id_user;
-          console.log(i2 + " " + id)
         }
 
         UserController.findOne(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined)
@@ -50,11 +52,9 @@ friendsRouter.get('/friendlist', /*jwt.checkTokenAdmin,*/ function(req, res) {
         })
         .catch((err) => {
           if(i2 === friends.length - 1)
-            res.status(200).json(friends);
+            res.status(500).json(err);
         })
       }
-
-
     })
     .catch((err) => {
         res.status(500).json(err);
