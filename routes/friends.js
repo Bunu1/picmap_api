@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const controllers = require('../controllers');
 
 const FriendsController = controllers.FriendsController;
+const UserController = controllers.UserController;
 
 const friendsRouter = express.Router();
 friendsRouter.use(bodyParser.json());
@@ -19,11 +20,11 @@ friendsRouter.get('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
 
 friendsRouter.get('/friendlist', /*jwt.checkTokenAdmin,*/ function(req, res) {
     var id_user = req.query.id_user;
-    
+
     if(id_user === undefined) {
         res.status(400).json({ 'error': 'parametres invalides' });
     }
-    
+
     FriendsController.getFriendlist(id_user)
     .then((friends) => {
         res.status(200).json(friends);
@@ -35,11 +36,11 @@ friendsRouter.get('/friendlist', /*jwt.checkTokenAdmin,*/ function(req, res) {
 
 friendsRouter.get('/requests', /*jwt.checkTokenAdmin,*/ function(req, res) {
     var id_user = req.query.id_user;
-    
+
     if(id_user === undefined) {
         res.status(400).json({ 'error': 'parametres invalides' });
     }
-    
+
     FriendsController.getRequests(id_user)
     .then((friends) => {
         res.status(200).json(friends);
@@ -52,11 +53,11 @@ friendsRouter.get('/requests', /*jwt.checkTokenAdmin,*/ function(req, res) {
 friendsRouter.get('/status', /*jwt.checkTokenAdmin,*/ function(req, res) {
     var id_user = req.query.id_user;
     var id_friend = req.query.id_friend;
-    
+
     if(id_user === undefined || id_friend === undefined) {
         res.status(400).json({ 'error': 'parametres invalides' });
     }
-    
+
     FriendsController.getStatus(id_user, id_friend)
     .then((friends) => {
         res.status(200).json(friends);
@@ -99,7 +100,7 @@ friendsRouter.put('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
     const id_user   = req.body.id_user;
     const id_friend = req.body.id_friend;
     const accepted  = req.body.accepted;
-    
+
     if(id === undefined) {
         res.status(400).end();
         return;
@@ -117,11 +118,11 @@ friendsRouter.put('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
 
 friendsRouter.delete('/:id', /*jwt.checkTokenAdmin,*/ function(req, res) {
   const id = req.params.id;
-  
+
   if(id === undefined) {
     req.status(400).end();
   }
-  
+
   FriendsController.remove(id)
   .then((p) => {
     res.status(201).json({itemsDeleted: p});

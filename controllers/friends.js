@@ -15,7 +15,7 @@ FriendsController.createFriends = function(id_user, id_friend) {
 FriendsController.findAll = function(id, id_user, id_friend, accepted) {
   const where = {};
   const options = {};
-  
+
     if(id !== undefined){
         where.id = id
     }
@@ -28,7 +28,7 @@ FriendsController.findAll = function(id, id_user, id_friend, accepted) {
     if(accepted !== undefined){
         where.accepted = accepted
     }
-    
+
     options.where = where;
     options.include = ['User']
     return Friends.findAll(options);
@@ -36,7 +36,7 @@ FriendsController.findAll = function(id, id_user, id_friend, accepted) {
 
 FriendsController.getFriendlist = function(id_user) {
     const options = {}
-    
+
     const where = {
         [Op.or]: [
             {
@@ -48,26 +48,27 @@ FriendsController.getFriendlist = function(id_user) {
         ],
         accepted: 1
     };
-    
+
     options.where = where;
-    return Friends.findAll(options);    
+    return Friends.findAll(options);
 }
 
 FriendsController.getRequests = function(id_user) {
     const options = {}
-    
+
     const where = {
         id_friend: id_user,
         accepted: 0
     };
-    
+
     options.where = where;
-    return Friends.findAll(options);    
+    options.include = ['User']
+    return Friends.findAll(options);
 }
 
 FriendsController.getStatus = function(id_user, id_friend) {
     const options = {}
-    
+
     const where = {
         [Op.or]: [
             {
@@ -79,18 +80,18 @@ FriendsController.getStatus = function(id_user, id_friend) {
                 id_friend: id_user
             }
         ],
-        
-        
+
+
     };
-    
+
     options.where = where;
-    return Friends.findOne(options);    
+    return Friends.findOne(options);
 }
 
 FriendsController.findOne = function(id, id_user, id_friend, accepted) {
   const where = {};
   const options = {};
-  
+
     if(id !== undefined){
         where.id = id
     }
@@ -103,7 +104,7 @@ FriendsController.findOne = function(id, id_user, id_friend, accepted) {
     if(accepted !== undefined){
         where.accepted = accepted
     }
-    
+
     options.where = where;
     options.include = ['User']
     return Friends.findOne(options);
@@ -128,7 +129,7 @@ FriendsController.update = function(id, id_user, id_friend, accepted) {
 
 FriendsController.remove = function(id) {
   return Friends.destroy({
-    where: { 
+    where: {
       id: id
     }
   });

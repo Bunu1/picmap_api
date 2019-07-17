@@ -7,7 +7,7 @@ const PhotoController = function() { };
 PhotoController.findAll = function(id, description, link, coordinate_x, coordinate_y, id_user, id_event, deleted, limit, offset) {
     const where = {};
 	const options = {};
-  
+
 	if(id !== undefined){
 		where.id = id;
 	}
@@ -34,7 +34,7 @@ PhotoController.findAll = function(id, description, link, coordinate_x, coordina
     if(deleted !== undefined){
 		where.deleted = deleted;
 	}
-    
+
 	options.where = where;
 	if(limit !== undefined){
 		options.limit = limit;
@@ -42,7 +42,7 @@ PhotoController.findAll = function(id, description, link, coordinate_x, coordina
 	if(offset !== undefined){
 		options.offset = offset;
 	}
-  
+
     options.include = ['User']
   return Photo.findAll(options);
 }
@@ -61,7 +61,7 @@ PhotoController.add = function(description, link, coordinate_x, coordinate_y, id
 
 PhotoController.delete = function(id) {
   return Photo.destroy({
-    where: { 
+    where: {
       id: id
     }
   });

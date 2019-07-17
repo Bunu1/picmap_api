@@ -36,7 +36,7 @@ photoRouter.get('/', function(req, res) {
   const limit = req.query.limit ? parseInt(req.query.limit) : undefined;
   const offset = req.query.offset ? parseInt(req.query.offset) : undefined;
 
-  PhotoController.findAll(req.query.id, req.query.description, req.query.link, req.query.coordinate_x, req.query.coordinate_y, req.query.id_user, req.query.id_event, limit, offset)
+  PhotoController.findAll(req.query.id, req.query.description, req.query.link, req.query.coordinate_x, req.query.coordinate_y, req.query.id_user, req.query.id_event, req.query.deleted, limit, offset)
   .then((photos) => {
     res.status(200).json(photos);
   })
