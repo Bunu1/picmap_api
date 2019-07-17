@@ -15,14 +15,14 @@ ModelIndex
 
 function _startServer() {
 
-    const app = express();
-    
-    app.use(cors());
-	app.options('*', cors());
-    RouteManager.attach(app);
-  
-  
-      app.listen(8080, function() {
-          console.log('Server started on 8080...');
-      });
+  const app = express();
+
+  app.use(cors());  
+  app.options('*', cors());
+  RouteManager.attach(app);
+
+
+  app.listen(8080, function() {
+      console.log('Server started on 8080...');
+  });
 }

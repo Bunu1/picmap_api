@@ -16,7 +16,7 @@ photoRouter.post('/', /*jwt.checkToken,*/ function(req, res) {
     const id_user = req.body.id_user;
     const id_event = req.body.id_event;
     const deleted = req.body.deleted;
-    
+
     if(link === undefined || coordinate_x === undefined || coordinate_y === undefined || id_user === undefined, id_event === undefined) {
         res.status(400).end();
         return;
@@ -35,8 +35,8 @@ photoRouter.post('/', /*jwt.checkToken,*/ function(req, res) {
 photoRouter.get('/', function(req, res) {
   const limit = req.query.limit ? parseInt(req.query.limit) : undefined;
   const offset = req.query.offset ? parseInt(req.query.offset) : undefined;
-    console.log("desc = " + req.query.description)
-  PhotoController.findAll(req.query.id, req.query.description, req.query.link, req.query.coordinate_x, req.query.coordinate_y, limit, offset)
+
+  PhotoController.findAll(req.query.id, req.query.description, req.query.link, req.query.coordinate_x, req.query.coordinate_y, req.query.id_user, req.query.id_event, limit, offset)
   .then((photos) => {
     res.status(200).json(photos);
   })
@@ -55,7 +55,7 @@ photoRouter.put('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
     const id_user = req.body.id_user;
     const id_event = req.body.id_event;
     const deleted = req.body.deleted;
-  
+
     if(id === undefined) {
         res.status(400).end();
         return;
@@ -73,11 +73,11 @@ photoRouter.put('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
 
 photoRouter.put('/remove/:id', function(req, res) {
     const id = req.params.id;
-    
+
     if(id === undefined) {
         req.status(400).end();
     }
-    
+
     PhotoController.update(id, undefined, undefined, undefined, undefined, undefined, undefined, 1)
     .then((photo) => {
         res.status(200).json({count: photo});
@@ -89,11 +89,11 @@ photoRouter.put('/remove/:id', function(req, res) {
 
 photoRouter.delete('/:id', /*jwt.checkTokenAdmin,*/ function(req, res) {
   const id = parseInt(req.params.id);
-  
+
   if(id === undefined) {
     req.status(400).end();
   }
-  
+
   PhotoController.delete(id)
   .then((photo) => {
     res.status(201).json(photo);
