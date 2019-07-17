@@ -40,6 +40,22 @@ eventRouter.get('/ongoing', /*jwt.checkTokenAdmin,*/ function(req, res) {
   });
 });
 
+eventRouter.get('/old', /*jwt.checkTokenAdmin,*/ function(req, res) {
+
+  let photo = false;
+  if(req.query.photos !== undefined) {
+      photo = JSON.parse(req.query.photos)
+  }
+
+  EventController.findOlds(req.query.id, req.query.name, req.query.start_date, req.query.end_date, req.query.coordinate_x, req.query.coordinate_y, req.query.range, photo)
+  .then((events) => {
+      res.status(200).json(events);
+  })
+  .catch((err) => {
+      res.status(500).end();
+  });
+});
+
 eventRouter.get('/one', /*jwt.checkTokenAdmin,*/ function(req, res) {
     EventController.findOne(req.query.id, req.query.name, req.query.start_date, req.query.end_date, req.query.coordinate_x, req.query.coordinate_y, req.query.range)
     .then((event) => {

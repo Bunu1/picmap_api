@@ -48,25 +48,77 @@ EventController.findActuals = function(id, name, start_date, end_date, coordinat
   const where = {};
   const options = {};
 
-    where.start_date = {
-        [Op.lte]: new Date()
-    };
-    where.end_date = {
-        [Op.gte]: new Date()
-    };
+  if(id !== undefined){
+      where.id = id;
+  }
+  if(name !== undefined){
+      where.name = name;
+  }
+  if(coordinate_x !== undefined){
+      where.coordinate_x = coordinate_x;
+  }
+  if(coordinate_y !== undefined){
+      where.coordinate_y = coordinate_y;
+  }
+  if(range !== undefined){
+      where.range = range;
+  }
 
-console.log(new Date())
-    options.where = where;
-    if(photos) {
-        options.include = [{
-            model: Photo,
-            include: ['User'],
-            where: { deleted: 0 },
-            required: false
-        }]
-    }
+  where.start_date = {
+      [Op.lte]: new Date()
+  };
+  where.end_date = {
+      [Op.gte]: new Date()
+  };
 
-    return Event.findAll(options);
+  options.where = where;
+  if(photos) {
+      options.include = [{
+          model: Photo,
+          include: ['User'],
+          where: { deleted: 0 },
+          required: false
+      }]
+  }
+
+  return Event.findAll(options);
+};
+
+EventController.findOlds = function(id, name, start_date, end_date, coordinate_x, coordinate_y, range, photos) {
+  const where = {};
+  const options = {};
+
+  if(id !== undefined){
+      where.id = id;
+  }
+  if(name !== undefined){
+      where.name = name;
+  }
+  if(coordinate_x !== undefined){
+      where.coordinate_x = coordinate_x;
+  }
+  if(coordinate_y !== undefined){
+      where.coordinate_y = coordinate_y;
+  }
+  if(range !== undefined){
+      where.range = range;
+  }
+
+  where.end_date = {
+      [Op.lte]: new Date()
+  };
+
+  options.where = where;
+  if(photos) {
+      options.include = [{
+          model: Photo,
+          include: ['User'],
+          where: { deleted: 0 },
+          required: false
+      }]
+  }
+
+  return Event.findAll(options);
 };
 
 EventController.findOne = function(id, name, start_date, end_date, coordinate_x, coordinate_y, range) {
