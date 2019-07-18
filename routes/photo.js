@@ -8,30 +8,6 @@ const PhotoController = controllers.PhotoController;
 const photoRouter = express.Router();
 photoRouter.use(bodyParser.json());
 
-photoRouter.post('/', /*jwt.checkToken,*/ function(req, res) {
-    const description = req.body.description;
-    const link = req.body.link;
-    const coordinate_x = req.body.coordinate_x;
-    const coordinate_y = req.body.coordinate_y;
-    const id_user = req.body.id_user;
-    const id_event = req.body.id_event;
-    const deleted = req.body.deleted;
-
-    if(link === undefined || coordinate_x === undefined || coordinate_y === undefined || id_user === undefined, id_event === undefined) {
-        res.status(400).end();
-        return;
-    }
-
-    PhotoController.add(description, link, coordinate_x, coordinate_y, id_user, id_event, deleted)
-    .then((p) => {
-        res.status(201).json(p);
-    })
-    .catch((err) => {
-        console.error(err);
-        res.status(500).end({ "error": "Can't add the photo" });
-    });
-});
-
 photoRouter.get('/', function(req, res) {
   const limit = req.query.limit ? parseInt(req.query.limit) : undefined;
   const offset = req.query.offset ? parseInt(req.query.offset) : undefined;
@@ -44,6 +20,38 @@ photoRouter.get('/', function(req, res) {
     console.error(err);
     res.status(500).end();
   });
+});
+
+photoRouter.post('/', /*jwt.checkToken,*/ function(req, res) {
+    const description = req.body.description;
+    const link = req.body.link;
+    const coordinate_x = req.body.coordinate_x;
+    const coordinate_y = req.body.coordinate_y;
+    const id_user = req.body.id_user;
+    const id_event = req.body.id_event;
+    const deleted = req.body.deleted;
+
+    if(link === undefined || coordinate_x === undefined || coordinate_y === undefined || id_user === undefined, id_event === undefined) {
+      res.status(400).end();
+      return;
+    }
+
+    PhotoController.add(description, link, coordinate_x, coordinate_y, id_user, id_event, deleted)
+    .then((p) => {
+      var regex = /#[a-zA-Z]+/g;
+      var found = p.description.match(regex);
+
+      found.forEach((el) => {
+        console.log(el)
+        
+      })
+
+      res.status(201).json(p);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).end({ "error": "Can't add the photo" });
+    });
 });
 
 photoRouter.put('/', /*jwt.checkTokenAdmin,*/ function(req, res) {

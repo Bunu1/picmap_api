@@ -70,7 +70,26 @@ friendsRouter.get('/requests', /*jwt.checkTokenAdmin,*/ function(req, res) {
 
     FriendsController.getRequests(id_user)
     .then((friends) => {
+      if(friends.length === 0)
         res.status(200).json(friends);
+
+      for(let i = 0; i < friends.length; i++) {
+        let i2 = i;
+
+        UserController.findOne(friends[i2].dataValues.id_user, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined)
+        .then((user) => {
+          friends[i2].dataValues.User = user.dataValues;
+
+          if(i2 === (friends.length - 1)) {
+            res.status(200).json(friends);
+          }
+
+        })
+        .catch((err) => {
+          if(i2 === friends.length - 1)
+            res.status(500).json(err);
+        })
+      }
     })
     .catch((err) => {
         res.status(500).json(err);

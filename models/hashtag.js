@@ -9,9 +9,15 @@ module.exports = function (sequelize, DataTypes) {
           type: DataTypes.STRING,
           allowNull: false
       },
+      first_use: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW
+      },
       count: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        defaultValue: 1
       }
     }, {
         paranoid: false,
