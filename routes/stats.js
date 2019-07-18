@@ -12,12 +12,11 @@ statsRouter.use(bodyParser.json());
 statsRouter.get('/', function(req, res) {
   PhotoController.count()
   .then((count) => {
-    console.log("count = " + count)
-    res.status(200).json(photo);
+    res.status(200).json(count);
   })
   .catch((err) => {
     res.status(500).end(err);
-  })
+  });
 });
 
 module.exports = statsRouter;

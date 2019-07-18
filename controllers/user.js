@@ -124,7 +124,7 @@ UserController.findAll = function(id, firstname, lastname, username, email, pp_l
     return User.findAll(options);
 };
 
-UserController.update = function(id, firstname, lastname, username, email, password, pp_link, date_insc, admin, active, enabled) {
+UserController.update = function(id, firstname, lastname, username, email, password, pp_link, admin, active, enabled) {
     return User.update({
 			firstname: firstname,
 			lastname: lastname,

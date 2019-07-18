@@ -102,7 +102,6 @@ userRouter.put('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
         return;
     }
 
-
     UserController.update(id, firstname, lastname, username, email, password, pp_link, admin, active, enabled)
     .then((user) => {
         res.status(201).json(user);
