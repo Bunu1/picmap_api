@@ -4,6 +4,10 @@ const Op = ModelIndex.Sequelize.Op;
 
 const PhotoController = function() { };
 
+PhotoController.count = function() {
+  return Photo.count();
+}
+
 PhotoController.findAll = function(id, description, link, coordinate_x, coordinate_y, id_user, id_event, deleted, limit, offset) {
     const where = {};
 	const options = {};

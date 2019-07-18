@@ -9,6 +9,15 @@ const PhotoController = controllers.PhotoController;
 const statsRouter = express.Router();
 statsRouter.use(bodyParser.json());
 
-statsRouter.get('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
-  
+statsRouter.get('/', function(req, res) {
+  PhotoController.count()
+  .then((count) => {
+    console.log("count = " + count)
+    res.status(200).json(photo);
+  })
+  .catch((err) => {
+    res.status(500).end(err);
+  })
 });
+
+module.exports = statsRouter;
