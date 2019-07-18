@@ -54,14 +54,15 @@ userRouter.post('/login', function(req, res) {
   const password = req.body.password;
 
   if(username === null || password === null) {
-    res.status(400).json({ 'error': 'Invalid parameters' });
+    res.status(400).json({ 'error': 'Paramètres invalides' });
   }
 
   UserController.checkUsername(username)
   .then((user) => {
-    if(user.active === 0)
-      res.status(400).json({ 'error': 'Account disabled' });
-
+    if(user.active === 0) {
+      res.status(400).json({ 'error': 'Compte désactivé' });
+      return;
+      }
       bcrypt.compare(password, user.password, function(err, result) {
         if(result) {
             res.status(200).json({
@@ -75,12 +76,13 @@ userRouter.post('/login', function(req, res) {
               'token': jwt.generateToken(user)
             });
         } else {
-          res.status(400).json({ 'error': 'Invalid identifiers' });
+          res.status(400).json({ 'error': 'Paramètres invalides' });
         }
       });
   })
   .catch((err) => {
-		res.status(400).json({ 'error': 'Invalid identifiers' });
+    console.log(err)
+		res.status(400).end({ 'error': 'Paramètres invalides' });
   });
 });
 
@@ -121,19 +123,19 @@ userRouter.post('/register', function(req, res) {
     const admin     = req.body.admin;
 
     if(firstname === undefined || lastname === undefined || email === undefined || password1 === undefined || password2 === undefined || username === undefined) {
-        res.status(400).json({ 'error': 'parametres invalides' });
+        res.status(400).json({ 'error': 'Paramètres invalides' });
     }
 
     if(password1 !== password2) {
-        res.status(500).json({'error': 'passwords are different'});
+        res.status(500).json({'error': 'Les mots de passes sont différents'});
     } else {
         bcrypt.hash(password1, 5, function(err, bcryptpwd) {
             UserController.createUser(firstname, lastname, username, email, bcryptpwd, pp_link, admin)
             .then((user) => {
-                res.status(201).json({'res': 'User creation succeeded'});
+                res.status(201).json({'res': 'Succès de la création de l\'utilisateur'});
             })
             .catch((err) => {
-                res.status(500).json({'error': 'User creation failed'});
+                res.status(500).json({'error': 'Échec de la création de l\'utilisateur'});
             })
         });
     }
