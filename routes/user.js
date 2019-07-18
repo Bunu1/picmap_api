@@ -59,9 +59,11 @@ userRouter.post('/login', function(req, res) {
 
   UserController.checkUsername(username)
   .then((user) => {
+    if(user.active === 0)
+      res.status(400).json({ 'error': 'Account disabled' });
+
       bcrypt.compare(password, user.password, function(err, result) {
         if(result) {
-          if(user.enabled === 1) {
             res.status(200).json({
               'id': user.id,
               'firstname': user.firstname,
@@ -72,9 +74,6 @@ userRouter.post('/login', function(req, res) {
               'isAdmin': user.admin,
               'token': jwt.generateToken(user)
             });
-          } else {
-            res.status(403).json({ "error": "Account disabled" })
-          }
         } else {
           res.status(400).json({ 'error': 'Invalid identifiers' });
         }
