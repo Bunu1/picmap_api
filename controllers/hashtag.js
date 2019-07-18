@@ -11,8 +11,10 @@ HashtagController.findAll = function(id, hashtag, first_use, count, limit, offse
 	if(id !== undefined){
 		where.id = id;
 	}
-	if(hashtag !== undefined){
-		where.hashtag = hashtag;
+  if(hashtag !== undefined){
+		where.hashtag = {
+			[Op.like]: "%"+hashtag+"%"
+		};
 	}
 	if(first_use !== undefined){
 		where.first_use = first_use;

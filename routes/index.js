@@ -5,7 +5,8 @@ RouteManager.attach = function(app) {
   app.use('/user', require('./user')),
   app.use('/friends', require('./friends')),
   app.use('/event', require('./event')),
-  app.use('/stats', require('./stats'))
+  app.use('/stats', require('./stats')),
+  app.use('/hashtag', require('./hashtag'))
 };
 
 module.exports = RouteManager;
