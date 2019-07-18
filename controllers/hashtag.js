@@ -4,7 +4,7 @@ const Op = ModelIndex.Sequelize.Op;
 
 const HashtagController = function() { };
 
-HashtagController.findAll = function(id, hashtag, first_use, count, limit, offset) {
+HashtagController.findAll = function(id, hashtag, first_use, count, limit, offset, order) {
   const where = {};
 	const options = {};
 
@@ -28,6 +28,9 @@ HashtagController.findAll = function(id, hashtag, first_use, count, limit, offse
 	}
 
   options.where = where;
+  if(order) {
+    options.order = [['COUNT', 'DESC']]
+  }
   return Hashtag.findAll(options);
 }
 
