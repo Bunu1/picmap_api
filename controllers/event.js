@@ -6,6 +6,10 @@ const Now = ModelIndex.Sequelize.NOW;
 
 const EventController = function() { };
 
+EventController.count = function() {
+  return Event.count();
+}
+
 EventController.findAll = function(id, name, start_date, end_date, coordinate_x, coordinate_y, range, photos) {
   const where = {};
   const options = {};
