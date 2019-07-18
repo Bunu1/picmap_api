@@ -4,7 +4,6 @@ const Op = ModelIndex.Sequelize.Op;
 
 const HashtagController = function() { };
 
-
 HashtagController.findAll = function(id, hashtag, first_use, count, limit, offset) {
   const where = {};
 	const options = {};
@@ -30,6 +29,33 @@ HashtagController.findAll = function(id, hashtag, first_use, count, limit, offse
 
   options.where = where;
   return Hashtag.findAll(options);
+}
+
+HashtagController.findOne = function(id, hashtag, first_use, count, limit, offset) {
+  const where = {};
+	const options = {};
+
+	if(id !== undefined){
+		where.id = id;
+	}
+	if(hashtag !== undefined){
+		where.hashtag = hashtag;
+	}
+	if(first_use !== undefined){
+		where.first_use = first_use;
+	}
+	if(count !== undefined){
+		where.count = count;
+  }
+	if(limit !== undefined){
+		options.limit = limit;
+	}
+	if(offset !== undefined){
+		options.offset = offset;
+	}
+
+  options.where = where;
+  return Hashtag.findOne(options);
 }
 
 HashtagController.add = function(hashtag, first_use, count) {

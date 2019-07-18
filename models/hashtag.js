@@ -7,7 +7,8 @@ module.exports = function (sequelize, DataTypes) {
       },
       hashtag: {
           type: DataTypes.STRING,
-          allowNull: false
+          allowNull: false,
+          unique: true
       },
       first_use: {
         type: DataTypes.DATE,

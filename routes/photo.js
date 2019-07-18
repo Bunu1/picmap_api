@@ -4,6 +4,7 @@ const controllers = require('../controllers');
 const jwt = require('../utils/jwt.utils');
 
 const PhotoController = controllers.PhotoController;
+const HashtagController = controllers.HashtagController;
 
 const photoRouter = express.Router();
 photoRouter.use(bodyParser.json());
@@ -42,8 +43,13 @@ photoRouter.post('/', /*jwt.checkToken,*/ function(req, res) {
       var found = p.description.match(regex);
 
       found.forEach((el) => {
-        console.log(el)
-        
+        HashtagController.findOne(undefined, el.substring(1), undefined, undefined, undefined, undefined)
+        .then((hashtag) => {
+          HashtagController.update(hashtag.id, undefined, undefined, hashtag.count + 1)
+        })
+        .catch((err) => {
+          HashtagController.add(el.substring(1), undefined, undefined);
+        })
       })
 
       res.status(201).json(p);
