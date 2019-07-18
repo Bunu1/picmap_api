@@ -1,10 +1,10 @@
 module.exports = function (sequelize, DataTypes) {
     const Photo = sequelize.define('Event', {
         id: {
-			type: DataTypes.INTEGER,
-			primaryKey: true,
-			autoIncrement: true
-		},
+    			type: DataTypes.INTEGER,
+    			primaryKey: true,
+    			autoIncrement: true
+    		},
         name: {
             type: DataTypes.TEXT,
             allowNull: false

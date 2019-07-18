@@ -27,7 +27,7 @@ friendsRouter.get('/friendlist', /*jwt.checkTokenAdmin,*/ function(req, res) {
 
     FriendsController.getFriendlist(id_user)
     .then((friends) => {
-      
+
       if(friends.length === 0)
         res.status(200).json(friends);
 

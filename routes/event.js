@@ -12,7 +12,6 @@ eventRouter.get('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
   let photo = false;
   if(req.query.photos !== undefined) {
       photo = JSON.parse(req.query.photos)
-      console.log(photo)
   }
 
   EventController.findAll(req.query.id, req.query.name, req.query.start_date, req.query.end_date, req.query.coordinate_x, req.query.coordinate_y, req.query.range, photo)
@@ -79,7 +78,7 @@ eventRouter.post('/', function(req, res) {
         res.status(201).json(event);
     })
     .catch((err) => {
-        res.status(500).end();
+        res.status(500).end(err);
     })
 });
 
