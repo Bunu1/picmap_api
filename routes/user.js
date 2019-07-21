@@ -46,7 +46,7 @@ userRouter.get('/one', function(req, res) {
       photo = JSON.parse(req.query.photos)
   }
 
-  UserController.findOne(req.query.id, req.query.firstname, req.query.lastname, req.query.username, req.query.email, req.query.pp_link, req.query.date_insc, req.query.admin, req.query.active, req.query.enabled)
+  UserController.findOne(req.query.id, req.query.firstname, req.query.lastname, req.query.username, req.query.email, req.query.pp_link, req.query.date_insc, req.query.admin, req.query.active, req.query.enabled, photo)
   .then((user) => {
       res.status(200).json(user);
   })
