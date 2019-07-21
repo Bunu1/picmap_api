@@ -18,6 +18,16 @@ friendsRouter.get('/', /*jwt.checkTokenAdmin,*/ function(req, res) {
   });
 });
 
+friendsRouter.get('/one', function(req, res) {
+    FriendsController.findOne(req.query.id, req.query.id_user, req.query.id_friend, req.query.accepted)
+    .then((friend) => {
+        res.status(200).json(friend);
+    })
+    .catch((err) => {
+        res.status(500).end();
+    });
+});
+
 friendsRouter.get('/friendlist', /*jwt.checkTokenAdmin,*/ function(req, res) {
     var id_user = req.query.id_user;
 
@@ -113,26 +123,26 @@ friendsRouter.get('/status', /*jwt.checkTokenAdmin,*/ function(req, res) {
     });
 });
 
-friendsRouter.get('/one', function(req, res) {
-    FriendsController.findOne(req.query.id, req.query.id_user, req.query.id_friend, req.query.accepted)
-    .then((friend) => {
-        res.status(200).json(friend);
+friendsRouter.get("/banned", function(req, res) {
+    FriendsController.getBanned()
+    .then((friends) => {
+      res.status(200).json(friends);
     })
     .catch((err) => {
-        res.status(500).end();
-    });
+      res.status(500).json(err);
+    })
 });
-
 
 friendsRouter.post('/', function(req, res) {
     const id_user   = req.body.id_user;
     const id_friend = req.body.id_friend;
+    const accepted = req.body.accepted;
 
-    if(id_user === undefined || id_friend === undefined) {
+    if(id_user === undefined || id_friend === undefined || accepted > 2 || accepted < 0) {
         res.status(400).json({ 'error': 'parametres invalides' });
     }
 
-    FriendsController.createFriend(id_user, id_friend)
+    FriendsController.createFriend(id_user, id_friend, accepted)
     .then((friend) => {
         res.status(201).json(friend);
     })

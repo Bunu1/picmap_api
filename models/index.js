@@ -12,10 +12,10 @@ ModelIndex.getModel = function (modelName) {
     return this[modelName];
 };
 
-const sequelize = new Sequelize('picmap', 'root', 'root', {
-  host: 'localhost',
+const sequelize = new Sequelize('bunu_picmap', 'bunu', '!MotDePasseDeBunu123', {
+  host: 'mysql-bunu.alwaysdata.net',
   dialect: 'mysql',
-  port: 8889,
+  port: 3306,
   operatorsAliases: Op
 });
 
