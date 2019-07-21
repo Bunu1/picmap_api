@@ -123,7 +123,7 @@ friendsRouter.get('/status', /*jwt.checkTokenAdmin,*/ function(req, res) {
     });
 });
 
-friendsRouter.get("/banned", function(req, res) {
+friendsRouter.get("/ban", function(req, res) {
     FriendsController.getBanned()
     .then((friends) => {
       let arr_friends = []
