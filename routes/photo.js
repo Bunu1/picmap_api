@@ -32,7 +32,7 @@ photoRouter.post('/', /*jwt.checkToken,*/ function(req, res) {
     const id_event = req.body.id_event;
     const deleted = req.body.deleted;
 
-    if(link === undefined || coordinate_x === undefined || coordinate_y === undefined || id_user === undefined, id_event === undefined) {
+    if(link === undefined || id_user === undefined, id_event === undefined) {
       res.status(400).end();
       return;
     }

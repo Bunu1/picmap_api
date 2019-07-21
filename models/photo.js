@@ -15,11 +15,11 @@ module.exports = function (sequelize, DataTypes) {
         },
         coordinate_x: {
             type: DataTypes.TEXT,
-            allowNull: false
+            allowNull: true
         },
         coordinate_y: {
             type: DataTypes.TEXT,
-            allowNull: false
+            allowNull: true
         },
         id_user: {
       			type: DataTypes.INTEGER,
