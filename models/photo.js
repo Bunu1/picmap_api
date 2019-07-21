@@ -22,10 +22,10 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: false
         },
         id_user: {
-			type: DataTypes.INTEGER,
+      			type: DataTypes.INTEGER,
             allowNull: false,
             foreignKey: true
-		},
+    		},
         id_event: {
             type: DataTypes.INTEGER,
             allowNull: false,

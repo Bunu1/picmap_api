@@ -7,7 +7,8 @@ module.exports = function (sequelize, DataTypes) {
     		},
         name: {
             type: DataTypes.TEXT,
-            allowNull: false
+            allowNull: false,
+            unique: true
         },
         start_date: {
             type: DataTypes.DATE,

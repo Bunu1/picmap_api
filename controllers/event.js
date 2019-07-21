@@ -125,7 +125,7 @@ EventController.findOlds = function(id, name, start_date, end_date, coordinate_x
   return Event.findAll(options);
 };
 
-EventController.findOne = function(id, name, start_date, end_date, coordinate_x, coordinate_y, range) {
+EventController.findOne = function(id, name, start_date, end_date, coordinate_x, coordinate_y, range, photos) {
     const where = {};
     const options = {};
 
@@ -152,6 +152,16 @@ EventController.findOne = function(id, name, start_date, end_date, coordinate_x,
     }
 
     options.where = where;
+    options.where = where;
+    if(photos) {
+        options.include = [{
+            model: Photo,
+            include: ['User'],
+            where: { deleted: 0 },
+            required: false
+        }]
+    }
+    
     return Event.findOne(options);
 };
 

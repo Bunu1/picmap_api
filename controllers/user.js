@@ -43,7 +43,7 @@ UserController.getFriendlist = function(id) {
     return User.findOne(options);
 }
 
-UserController.findOne = function(id, firstname, lastname, username, email, pp_link, date_insc, admin, active, enabled) {
+UserController.findOne = function(id, firstname, lastname, username, email, pp_link, date_insc, admin, active, enabled, photos) {
     const where = {};
     const options = {};
 
@@ -78,11 +78,13 @@ UserController.findOne = function(id, firstname, lastname, username, email, pp_l
         where.enabled = enabled;
     }
     options.where = where;
-    options.include = [{
-        model: Photo,
-        where: { "deleted": 0 },
-        required: false
-    }];
+		if(photos) {
+	    options.include = [{
+	        model: Photo,
+	        where: { "deleted": 0 },
+	        required: false
+	    }]
+		}
     return User.findOne(options);
 }
 

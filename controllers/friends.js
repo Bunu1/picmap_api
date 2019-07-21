@@ -101,13 +101,22 @@ FriendsController.getStatus = function(id_user, id_friend) {
 }
 
 FriendsController.getBanned = function() {
-  return Friends.getAll(
+  return Friends.findAll(
     {
       where: {
         accepted: 2
       }
     }
-  )
+  );
+}
+
+FriendsController.getReportCount = function(id_friend) {
+  return Friends.count({
+      where: {
+        id_friend: id_friend,
+        accepted: 2
+      }
+  });
 }
 
 FriendsController.createFriend = function(id_user, id_friend, accepted) {

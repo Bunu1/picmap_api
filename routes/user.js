@@ -40,13 +40,19 @@ userRouter.get('/friendlist/:id', function(req, res) {
 
 
 userRouter.get('/one', function(req, res) {
-    UserController.findOne(req.query.id, req.query.firstname, req.query.lastname, req.query.username, req.query.email, req.query.pp_link, req.query.date_insc, req.query.admin, req.query.active, req.query.enabled)
-    .then((user) => {
-        res.status(200).json(user);
-    })
-    .catch((err) => {
-        res.status(500).end();
-    });
+
+  let photo = true;
+  if(req.query.photos !== undefined) {
+      photo = JSON.parse(req.query.photos)
+  }
+
+  UserController.findOne(req.query.id, req.query.firstname, req.query.lastname, req.query.username, req.query.email, req.query.pp_link, req.query.date_insc, req.query.admin, req.query.active, req.query.enabled)
+  .then((user) => {
+      res.status(200).json(user);
+  })
+  .catch((err) => {
+      res.status(500).end();
+  });
 });
 
 userRouter.post('/login', function(req, res) {

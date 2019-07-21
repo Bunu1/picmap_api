@@ -39,18 +39,22 @@ photoRouter.post('/', /*jwt.checkToken,*/ function(req, res) {
 
     PhotoController.add(description, link, coordinate_x, coordinate_y, id_user, id_event, deleted)
     .then((p) => {
-      var regex = /#[a-zA-Z]+/g;
-      var found = p.description.match(regex);
+      if(p.description) {
+        var regex = /#[a-zA-Z]+/g;
+        var found = p.description.match(regex);
 
-      found.forEach((el) => {
-        HashtagController.findOne(undefined, el.substring(1), undefined, undefined, undefined, undefined)
-        .then((hashtag) => {
-          HashtagController.update(hashtag.id, undefined, undefined, hashtag.count + 1)
-        })
-        .catch((err) => {
-          HashtagController.add(el.substring(1), undefined, undefined);
-        })
-      })
+        if(found) {
+          found.forEach((el) => {
+            HashtagController.findOne(undefined, el.substring(1), undefined, undefined, undefined, undefined)
+            .then((hashtag) => {
+              HashtagController.update(hashtag.id, undefined, undefined, hashtag.count + 1)
+            })
+            .catch((err) => {
+              HashtagController.add(el.substring(1), undefined, undefined);
+            })
+          })
+        }
+      }
 
       res.status(201).json(p);
     })

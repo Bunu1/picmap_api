@@ -126,10 +126,52 @@ friendsRouter.get('/status', /*jwt.checkTokenAdmin,*/ function(req, res) {
 friendsRouter.get("/banned", function(req, res) {
     FriendsController.getBanned()
     .then((friends) => {
-      res.status(200).json(friends);
+      let arr_friends = []
+      let arr = []
+
+      friends.forEach((el) => {
+        arr_friends.push(el.dataValues)
+      });
+
+      arr_friends = [...new Set(arr_friends.map(x => x.id_friend))];
+
+      arr_friends.forEach((el, index, a) => {
+        FriendsController.getReportCount(el)
+        .then((r) => {
+          if(r > 0) {
+            UserController.findOne(el, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 1, undefined, false)
+            .then((user) => {
+              user = user.dataValues;
+              arr.push({
+                user: user,
+                reports: r
+              });
+
+              if(index === (a.length - 1)) {
+                res.status(200).json(arr);
+                return;
+              }
+            })
+            .catch((err) => {
+              console.log(err)
+              res.status(500).end(err);
+            })
+          } else {
+            if(index === (a.length - 1)) {
+              res.status(200).json(arr);
+              return;
+            }
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+          res.status(500).end(err);
+        })
+      });
     })
     .catch((err) => {
-      res.status(500).json(err);
+      console.log(err)
+      res.status(500).end(err);
     })
 });
 
